@@ -325,9 +325,10 @@ public class MyController implements CS355Controller {
 			square.setSize(size * (1/get_zoom()));
 			
 			
-
+			//When I save the shape I need to take the scroll into account, so add or subtract by the scroll value
 			
 			model.deleteShapeSafe(current_index);
+			square.setCenter(new Point2D.Double(square.getCenter().getX() + get_scroll().getX(), square.getCenter().getY() + get_scroll().getY()));
 			current_index = model.addShape(square);
 			
 		}

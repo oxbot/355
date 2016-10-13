@@ -427,17 +427,27 @@ public class MyView implements ViewRefresher {
 	
 	public Graphics2D objToView(Graphics2D g2d, Point2D.Double center, double angle, double scale, Point2D.Double scroll, Color color) {
 		
+		//I think that my order is wrong for these and that's causing issues
+		
+		
 		AffineTransform objToWorld = new AffineTransform();
 		
 		//Object to world
+		//AffineTransform translateObj = new AffineTransform(1,0,0,1,center.getX(),center.getY());
 		objToWorld.translate(center.getX(), center.getY());
+		//AffineTransform rotate = new AffineTransform(Math.cos(angle),Math.sin(angle),-Math.sin(angle),Math.cos(angle),0,0);
 		objToWorld.rotate(angle);
 		
 		//World to view
 		//Currently the scroll is throwing it off, need to figure out how to do this. It needs to be stored taking the scroll into account, that's what
+		//AffineTransform translateView = new AffineTransform(1,0,0,1,-scroll.getX(),-scroll.getY());
 		objToWorld.translate(-scroll.getX(), -scroll.getY());
+		//AffineTransform scale = new AffineTransform(scale,0,0,scale,0,0);
 		objToWorld.scale(scale, scale);
 		
+		//What is the right order to concatenate?
+		//rotate.concatenate(translateObj.concatenate(translateView.concatenate(scale)));
+		//g2d.setTransform(rotate);
 		
 		g2d.setTransform(objToWorld);
 		
@@ -455,8 +465,9 @@ public class MyView implements ViewRefresher {
 		viewToObj.translate(scroll.getX(), scroll.getY());
 
 		//World to obj
-		viewToObj.rotate(-angle);
 		viewToObj.translate(-center.getX(), -center.getY());
+		viewToObj.rotate(-angle);
+		
 		
 		g2d.setTransform(viewToObj);
 		
